@@ -1,0 +1,8 @@
+Flask==2.2.2
+Flask-Cors==3.0.10
+flask-restx==1.0.5
+requests==2.26.0
+joblib==1.3.0
+pandas==2.0.2
+flaml==1.2.4
+scikit-learn==1.2.2
