@@ -16,12 +16,11 @@ class PredictionService():
         data = pd.DataFrame([data], columns=['PRG', 'PL', 'PR', 'SK', 'TS', 'M11', 'BD2', 'Age', 'Insurance'])
 
         predictions = model.predict(data)
-        if predictions:
-            if predictions == 1:
-                prediction = 'Positive'
-                return prediction
-            elif predictions == 0:
-                prediction = 'Negative'
-                return prediction
-        else:
-            return False
+        if predictions == np.array([1]):
+            prediction = 'Positive'
+            return prediction
+        elif predictions == np.array([0]):
+            prediction = 'Negative'
+            return prediction
+        else :
+            False
