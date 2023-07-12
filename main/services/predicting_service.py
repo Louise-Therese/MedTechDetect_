@@ -1,6 +1,7 @@
 import pandas as pd
 import joblib
 import os
+import numpy as np
 class PredictionService():
     """Service class for Predicting Patient."""
 
