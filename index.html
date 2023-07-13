@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Predict Sepsis </title>
+    <link rel="icon" href="LogoMedTech.webp" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        .container {
+            max-width: 400px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: rgb(248, 244, 244);
+        }
+
+        .custom-card-green {
+            background-color: #186c18;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #ddd
+        }
+
+        .custom-card-red {
+            background-color: #c60e0e;
+        }
+
+
+        .center-text {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-4">
+        <img class="rounded mx-auto d-block mb-3" src="LogoMedTech.webp" alt="MedTech Logo"
+            style="max-width: 100%; height: auto;">
+
+        <form id="contactForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Nom complet</label>
+                        <input class="form-control" id="name" type="text" placeholder="Nom complet" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="age">Age</label>
+                        <select class="form-select" id="age" aria-label="Default select example" required>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="PRG">PRG</label>
+                        <input class="form-control" id="PRG" type="text" placeholder="PRG" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="PL">PL</label>
+                        <input class="form-control" id="PL" type="text" placeholder="PL" required />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="PR">PR</label>
+                        <input class="form-control" id="PR" type="text" placeholder="PR" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="SK">SK</label>
+                        <input class="form-control" id="SK" type="text" placeholder="SK" required />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="TS">TS</label>
+                        <input class="form-control" id="TS" type="text" placeholder="TS" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="M11">M11</label>
+                        <input class="form-control" id="M11" type="text" placeholder="M11" required />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="BD2">BD2</label>
+                        <input class="form-control" id="BD2" type="text" placeholder="BD2" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label" for="Insurance">Insurance</label>
+                        <input class="form-control" id="Insurance" type="text" placeholder="Insurance" required />
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button class="btn btn-primary btn-lg" type="submit">Submit</button>
+            </div>
+        </form>
+
+        <div id="cardContainer" class="card mt-3 custom-card-green" style="display: none;">
+            <div class="card-body">
+
+                <p class="card-text center-text">
+                    <span id="patienticon"></span>
+                    Le patient
+                    <span id="patientName"></span>
+                    est <span id="patientResult"></span> au sepsis.
+                </p>
+            </div>
+        </div>
+
+        <div id="erreur_Message" class="erreur_Message" style="display: none;">
+            <p id="#text-erreur_Message" class="card-text center-text"></p>
+        </div>
+    </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var selectAge = $('#age');
+            selectAge.append('<option value="" selected disabled>Select an age</option>');
+            for (var i = 1; i <= 120; i++) {
+                selectAge.append('<option value="' + i + '">' + i + '</option>');
+            }
+
+            $('#contactForm').submit(function (event) {
+                event.preventDefault();
+                var formData = {
+                    age: parseFloat($('#age').val()),
+                    symptoms: {
+                        PRG: parseFloat($('#PRG').val()),
+                        PL: parseFloat($('#PL').val()),
+                        PR: parseFloat($('#PR').val()),
+                        SK: parseFloat($('#SK').val()),
+                        TS: parseFloat($('#TS').val()),
+                        M11: parseFloat($('#M11').val()),
+                        BD2: parseFloat($('#BD2').val()),
+                        Insurance: parseFloat($('#Insurance').val())
+                    }
+                };
+
+                const url = 'http://15.188.234.62:5000/v1/predict/patient';
+
+                var patientName = $('#name').val();
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var smile = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile-fill" viewBox="0 0 16 16">' +
+                            '<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z" />' +
+                            '</svg>';
+                        var sad = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-frown-fill" viewBox="0 0 16 16">' +
+                            '<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm-2.715 5.933a.5.5 0 0 1-.183-.683A4.498 4.498 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.498 3.498 0 0 0 8 10.5a3.498 3.498 0 0 0-3.032 1.75.5.5 0 0 1-.683.183zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z" />' +
+                            '</svg>';
+
+                        var result = response.prediction;
+
+                        $('#patientName').text(patientName);
+                        if (result === 'Positive') {
+                            $('#cardContainer').addClass('custom-card-red');
+                            $('#patientResult').text('positif');
+                            $('#patienticon').html(sad);
+                        }
+                        else {
+                            $('#patientResult').text('negatif');
+                            $('#patienticon').html(smile);
+                        }
+                        $('#erreur_Message').hide();
+                        $('#cardContainer').show();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                        $('#cardContainer').hide();
+                        $('#erreur_Message').text(error);
+                        $('#erreur_Message').show();
+                    }
+                });
+
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
